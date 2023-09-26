@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqecjdox2hhuo"]
+[gd_scene load_steps=6 format=3 uid="uid://dqecjdox2hhuo"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_ql552"]
 [ext_resource type="Environment" uid="uid://dvuekpc6hx0in" path="res://assets/environment/cam_environment.tres" id="2_ly7mr"]
@@ -7,7 +7,11 @@
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_jugux"]
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_detuv"]
+radius = 2.15
+
 [node name="CharacterBody3D" type="CharacterBody3D"]
+collision_mask = 2
 script = ExtResource("1_ql552")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -22,3 +26,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.580509, 0)
 [node name="Camera3D" type="Camera3D" parent="CamTarget"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.06448)
 environment = ExtResource("2_ly7mr")
+
+[node name="ObjectHoldPosition" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3018, 0)
+
+[node name="ItemDetection" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ItemDetection"]
+shape = SubResource("CylinderShape3D_detuv")
+
+[connection signal="body_entered" from="ItemDetection" to="." method="_on_item_detection_body_entered"]
+[connection signal="body_exited" from="ItemDetection" to="." method="_on_item_detection_body_exited"]

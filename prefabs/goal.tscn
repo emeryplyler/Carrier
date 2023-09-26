@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://coeqpr44e7306"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8d476"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_38h3g"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3623m"]
+radius = 5.90111
+
+[node name="Goal" type="StaticBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_8d476")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_38h3g")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CylinderShape3D_3623m")
