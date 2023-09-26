@@ -24,3 +24,5 @@ shape = SubResource("BoxShape3D_5rxsu")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.820082, 0.572246, 0, -0.572246, 0.820082, 9.47436, 6.79299, 0)
+light_color = Color(0.92549, 0.960784, 1, 1)
+shadow_enabled = true
