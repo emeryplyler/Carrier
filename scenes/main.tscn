@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bdtqodc87jhrh"]
+[gd_scene load_steps=10 format=3 uid="uid://bdtqodc87jhrh"]
 
 [ext_resource type="PackedScene" uid="uid://dqecjdox2hhuo" path="res://prefabs/player.tscn" id="1_k2ow1"]
 [ext_resource type="PackedScene" uid="uid://coeqpr44e7306" path="res://prefabs/goal.tscn" id="2_a1dwj"]
@@ -10,6 +10,18 @@ size = Vector3(30, 1, 120)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5rxsu"]
 size = Vector3(30, 1, 120)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gyimy"]
+resource_local_to_scene = true
+albedo_color = Color(0.8, 0.121569, 0.301961, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vgdgn"]
+resource_local_to_scene = true
+albedo_color = Color(1, 0.682353, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sptda"]
+resource_local_to_scene = true
+albedo_color = Color(0.243137, 0.384314, 0.901961, 1)
 
 [node name="Main" type="Node3D"]
 
@@ -39,6 +51,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.87633, 1.52796, -87.2074)
 
 [node name="Cargo" parent="." instance=ExtResource("3_pvfr7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89399, 2.77284, -6.91467)
+red = SubResource("StandardMaterial3D_gyimy")
+yellow = SubResource("StandardMaterial3D_vgdgn")
+blue = SubResource("StandardMaterial3D_sptda")
 
 [node name="BoxEmitter" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.01389, 8.45184, -2.24556)

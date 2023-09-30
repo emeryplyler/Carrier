@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqecjdox2hhuo"]
+[gd_scene load_steps=7 format=3 uid="uid://dqecjdox2hhuo"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_ql552"]
 [ext_resource type="Environment" uid="uid://dvuekpc6hx0in" path="res://assets/environment/cam_environment.tres" id="2_ly7mr"]
+[ext_resource type="Script" path="res://prefabs/Inventory.gd" id="3_3y4do"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tc0y6"]
 
@@ -36,6 +37,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3018, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ItemDetection"]
 shape = SubResource("CylinderShape3D_detuv")
+
+[node name="Inventory" type="Node3D" parent="."]
+script = ExtResource("3_3y4do")
 
 [connection signal="body_entered" from="ItemDetection" to="." method="_on_item_detection_body_entered"]
 [connection signal="body_exited" from="ItemDetection" to="." method="_on_item_detection_body_exited"]

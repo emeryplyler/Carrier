@@ -1,5 +1,7 @@
 extends StaticBody3D
 
+@onready var player = $"../CharacterBody3D"
+
 var id: int
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,5 +21,6 @@ func _on_area_3d_body_entered(body):
 		else:
 			if cargo_id == id:
 				print("yay thanks :3")
+				player.get_node("Inventory").add_subtract_money(5)
 			else:
 				print("i dont think this is mine")
