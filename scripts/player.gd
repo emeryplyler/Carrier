@@ -8,7 +8,7 @@ extends CharacterBody3D
 
 @onready var object_hold_position = $ObjectHoldPosition
 var objects_in_range = []
-var held_object
+var held_object: RigidBody3D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -31,8 +31,12 @@ func _physics_process(delta):
 	# Handle held objects
 	if Input.is_action_just_pressed("interact"):
 		if objects_in_range.size() > 0 and not held_object: # only hold one thing at a time
+			# NOTE: check if object is cargo or not. no picking up npcs it crashes
 			held_object = objects_in_range[0] # NOTE: change later?
 			held_object.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+		elif held_object:
+			held_object.freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+			held_object = null
 
 	if held_object:
 		held_object.global_transform.origin = object_hold_position.global_transform.origin

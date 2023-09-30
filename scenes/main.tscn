@@ -2,18 +2,14 @@
 
 [ext_resource type="PackedScene" uid="uid://dqecjdox2hhuo" path="res://prefabs/player.tscn" id="1_k2ow1"]
 [ext_resource type="PackedScene" uid="uid://coeqpr44e7306" path="res://prefabs/goal.tscn" id="2_a1dwj"]
+[ext_resource type="PackedScene" uid="uid://bumwkkgq0adxk" path="res://prefabs/cargo.tscn" id="3_pvfr7"]
+[ext_resource type="Script" path="res://scripts/BoxEmitter.gd" id="4_v8x2l"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_8rmcf"]
 size = Vector3(30, 1, 120)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5rxsu"]
 size = Vector3(30, 1, 120)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_dnrsj"]
-size = Vector3(1, 1.75, 2)
-
-[sub_resource type="BoxMesh" id="BoxMesh_vbnbb"]
-size = Vector3(1, 1.75, 2)
 
 [node name="Main" type="Node3D"]
 
@@ -41,12 +37,9 @@ shadow_enabled = true
 [node name="Goal" parent="." instance=ExtResource("2_a1dwj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.87633, 1.52796, -87.2074)
 
-[node name="Cargo" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9079, 3.22024, -9.34239)
-collision_mask = 3
+[node name="Cargo" parent="." instance=ExtResource("3_pvfr7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89399, 2.77284, -6.91467)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cargo"]
-shape = SubResource("BoxShape3D_dnrsj")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cargo"]
-mesh = SubResource("BoxMesh_vbnbb")
+[node name="BoxEmitter" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.01389, 8.45184, -2.24556)
+script = ExtResource("4_v8x2l")

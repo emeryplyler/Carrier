@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://bumwkkgq0adxk"]
+
+[ext_resource type="Script" path="res://scripts/cargo.gd" id="1_nofgv"]
+[ext_resource type="Material" uid="uid://b0bclonlqxoi6" path="res://assets/materials/cargo_blue.tres" id="2_sd1rn"]
+[ext_resource type="Material" uid="uid://c100u63jxcafq" path="res://assets/materials/cargo_red.tres" id="2_wigm7"]
+[ext_resource type="Material" uid="uid://cwko5tqlmv7kt" path="res://assets/materials/cargo_yellow.tres" id="3_uo3qo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dnrsj"]
+size = Vector3(1, 1.75, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_he3gw"]
+resource_local_to_scene = true
+material = ExtResource("2_sd1rn")
+size = Vector3(1, 1.75, 2)
+
+[node name="Cargo" type="RigidBody3D"]
+collision_mask = 3
+script = ExtResource("1_nofgv")
+red = ExtResource("2_wigm7")
+yellow = ExtResource("3_uo3qo")
+blue = ExtResource("2_sd1rn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_dnrsj")
+
+[node name="GrabPoint" type="Node3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.85, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_he3gw")
