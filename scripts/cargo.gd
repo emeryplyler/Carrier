@@ -16,13 +16,10 @@ func _ready():
 	if id == 0:
 #		mesh.mesh.material.albedo_color = red
 		mesh.mesh.material = red
-		print("red")
 	elif id == 1:
 		mesh.mesh.material = yellow
-		print("yellow")
 	elif id == 2:
 		mesh.mesh.material = blue
-		print("blue")
 	else:
 		print("Error: id is " + str(id))
 

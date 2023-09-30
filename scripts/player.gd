@@ -32,8 +32,12 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("interact"):
 		if objects_in_range.size() > 0 and not held_object: # only hold one thing at a time
 			# NOTE: check if object is cargo or not. no picking up npcs it crashes
-			held_object = objects_in_range[0] # NOTE: change later?
-			held_object.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+			for object in objects_in_range:
+				if object.is_in_group("Grabbable"):
+					held_object = object
+					held_object.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+					break
+			
 		elif held_object:
 			held_object.freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
 			held_object = null
