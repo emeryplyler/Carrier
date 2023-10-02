@@ -8,13 +8,13 @@ extends RigidBody3D
 @export var red: StandardMaterial3D
 @export var yellow: StandardMaterial3D
 @export var blue: StandardMaterial3D
+@export var randomize: bool = true
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	randomize() # init rng
-	id = randi() % 3 # 0 1 or 2
+	if randomize:
+		randomize() # init rng
+		id = randi() % 3 # 0 1 or 2
 	if id == 0:
-#		mesh.mesh.material.albedo_color = red
 		mesh.mesh.material = red
 	elif id == 1:
 		mesh.mesh.material = yellow

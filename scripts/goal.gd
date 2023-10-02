@@ -1,6 +1,6 @@
 extends StaticBody3D
 
-@onready var player = $"../CharacterBody3D"
+@onready var player = $"../Player"
 
 var id: int
 # Called when the node enters the scene tree for the first time.

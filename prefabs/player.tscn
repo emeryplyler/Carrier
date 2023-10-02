@@ -43,3 +43,4 @@ script = ExtResource("3_3y4do")
 
 [connection signal="body_entered" from="ItemDetection" to="." method="_on_item_detection_body_entered"]
 [connection signal="body_exited" from="ItemDetection" to="." method="_on_item_detection_body_exited"]
+[connection signal="money_changed" from="Inventory" to="." method="_on_inventory_money_changed"]

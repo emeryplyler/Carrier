@@ -9,6 +9,9 @@ extends CharacterBody3D
 @onready var object_hold_position = $ObjectHoldPosition
 var objects_in_range = []
 var held_object: RigidBody3D
+@onready var inventory = $Inventory
+
+signal money_changed(amount: int)
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -72,3 +75,6 @@ func _on_item_detection_body_entered(body):
 
 func _on_item_detection_body_exited(body):
 	objects_in_range.erase(body)
+
+func _on_inventory_money_changed(amount):
+	money_changed.emit(amount)
