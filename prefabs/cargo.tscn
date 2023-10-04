@@ -13,7 +13,7 @@ resource_local_to_scene = true
 material = ExtResource("2_sd1rn")
 size = Vector3(1, 1.75, 2)
 
-[node name="Cargo" type="RigidBody3D" groups=["Grabbable"]]
+[node name="Cargo" type="RigidBody3D" groups=["Cargo", "Grabbable"]]
 collision_mask = 3
 script = ExtResource("1_nofgv")
 red = ExtResource("2_wigm7")

@@ -24,4 +24,14 @@ shape = SubResource("CapsuleShape3D_38h3g")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("CylinderShape3D_3623m")
 
+[node name="Speech" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.10407, 0)
+billboard = 1
+font_size = 75
+autowrap_mode = 2
+width = 1000.0
+
+[node name="Timer" type="Timer" parent="Speech"]
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Speech/Timer" to="." method="_on_timer_timeout"]
