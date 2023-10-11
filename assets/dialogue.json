@@ -1,3 +1,4 @@
 [
-	{"Speaker":"Customer", "ID":"success", "Text":"Yay thanks :3"}
+	{"goal_success":"Yay thanks :3", 
+	"goal_mismatch":"I don't think this is mine."}
 ]

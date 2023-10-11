@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bdtqodc87jhrh"]
+[gd_scene load_steps=17 format=3 uid="uid://bdtqodc87jhrh"]
 
 [ext_resource type="PackedScene" uid="uid://dqecjdox2hhuo" path="res://prefabs/player.tscn" id="1_k2ow1"]
 [ext_resource type="PackedScene" uid="uid://coeqpr44e7306" path="res://prefabs/goal.tscn" id="2_a1dwj"]
@@ -7,6 +7,7 @@
 [ext_resource type="Theme" uid="uid://bfrh4u72mkpko" path="res://assets/text/money_text.tres" id="5_07a5l"]
 [ext_resource type="Script" path="res://scenes/Money_Label.gd" id="6_mkhv0"]
 [ext_resource type="Texture2D" uid="uid://ccpnf4nemnc86" path="res://assets/textures/coin.png" id="7_aink3"]
+[ext_resource type="Script" path="res://scenes/DialogueManager.gd" id="8_6tm21"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_8rmcf"]
 size = Vector3(30, 1, 120)
@@ -14,27 +15,27 @@ size = Vector3(30, 1, 120)
 [sub_resource type="BoxShape3D" id="BoxShape3D_5rxsu"]
 size = Vector3(30, 1, 120)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vt8hw"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h73to"]
 resource_local_to_scene = true
 albedo_color = Color(0.8, 0.121569, 0.301961, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ndot7"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esis7"]
 resource_local_to_scene = true
 albedo_color = Color(1, 0.682353, 0, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w1wvc"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lm6n5"]
 resource_local_to_scene = true
 albedo_color = Color(0.243137, 0.384314, 0.901961, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_giiur"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tgopo"]
 resource_local_to_scene = true
 albedo_color = Color(0.8, 0.121569, 0.301961, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fye6r"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ith7w"]
 resource_local_to_scene = true
 albedo_color = Color(1, 0.682353, 0, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x4x6u"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3x7w7"]
 resource_local_to_scene = true
 albedo_color = Color(0.243137, 0.384314, 0.901961, 1)
 
@@ -66,15 +67,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.87633, 1.52796, -87.2074)
 
 [node name="Cargo" parent="." instance=ExtResource("3_pvfr7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89399, 2.77284, -6.91467)
-red = SubResource("StandardMaterial3D_vt8hw")
-yellow = SubResource("StandardMaterial3D_ndot7")
-blue = SubResource("StandardMaterial3D_w1wvc")
+red = SubResource("StandardMaterial3D_h73to")
+yellow = SubResource("StandardMaterial3D_esis7")
+blue = SubResource("StandardMaterial3D_lm6n5")
 
 [node name="Cargo2" parent="." instance=ExtResource("3_pvfr7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.76103, 2.77284, -12.9933)
-red = SubResource("StandardMaterial3D_giiur")
-yellow = SubResource("StandardMaterial3D_fye6r")
-blue = SubResource("StandardMaterial3D_x4x6u")
+red = SubResource("StandardMaterial3D_tgopo")
+yellow = SubResource("StandardMaterial3D_ith7w")
+blue = SubResource("StandardMaterial3D_3x7w7")
 randomize = false
 
 [node name="BoxEmitter" type="Node3D" parent="."]
@@ -110,5 +111,8 @@ offset_top = -14.0
 offset_right = 334.0
 offset_bottom = 114.0
 texture = ExtResource("7_aink3")
+
+[node name="DialogueManager" type="Node3D" parent="."]
+script = ExtResource("8_6tm21")
 
 [connection signal="money_changed" from="Player" to="HUD/Money" method="_on_player_money_changed"]
