@@ -1,10 +1,11 @@
 extends CharacterBody3D
 
 @onready var camera_target = $CamTarget
-@onready var character_body = $MeshInstance3D
+@onready var character_body = $CharacterBody
 
 @export var SPEED = 5.0
-#const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 4.5
+const MAX_UP_VELOCITY = 8
 
 @onready var object_hold_position = $ObjectHoldPosition
 var objects_in_range = []
@@ -22,14 +23,17 @@ func _ready():
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * 0.005) # rotate cam side to side
-		character_body.rotate_y(event.relative.x * 0.005) # keep character from spinning
+		if is_on_floor():
+			character_body.rotate_y(event.relative.x * 0.005) # keep character from spinning
 		camera_target.rotate_x(-event.relative.y * 0.005) # rotate cam up and down
 		camera_target.rotation.x = clamp(camera_target.rotation.x, -PI/2, PI/2)
 
 func _physics_process(delta):
 	# Add the gravity.
-#	if not is_on_floor():
+	if not is_on_floor():
 #		velocity.y -= gravity * delta
+		velocity.y -= (gravity * delta)
+#		velocity.z = SPEED
 
 	# Handle held objects
 	if Input.is_action_just_pressed("interact"):
@@ -48,13 +52,18 @@ func _physics_process(delta):
 		held_object.global_transform.origin = object_hold_position.global_transform.origin
 
 	# Handle Jump.
-#	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-#		velocity.y = JUMP_VELOCITY
-	var vertical_dir = Input.get_action_strength("jump") - Input.get_action_strength("descend")
-	if vertical_dir != 0:
-		velocity.y = vertical_dir * SPEED
-	else:
-		velocity.y = move_toward(velocity.y, 0, SPEED)
+	if Input.is_action_pressed("jump"):
+		if velocity.y < MAX_UP_VELOCITY:
+			velocity.y += JUMP_VELOCITY
+		else:
+			velocity.y = MAX_UP_VELOCITY
+	
+	# Floating controls:
+#	var vertical_dir = Input.get_action_strength("jump") - Input.get_action_strength("descend")
+#	if vertical_dir != 0:
+#		velocity.y = vertical_dir * SPEED
+#	else:
+#		velocity.y = move_toward(velocity.y, 0, SPEED)
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
@@ -62,10 +71,16 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		if is_on_floor():
+			character_body.look_at(position + direction) # character faces direction they're walking
+		else:
+			character_body.rotation.y = 0 # face forward in the air
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+		if not is_on_floor():
+			character_body.rotation.y = 0 # face forward in the air
+	
 	move_and_slide()
 
 func _on_item_detection_body_entered(body):
