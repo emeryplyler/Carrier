@@ -12,6 +12,8 @@ var objects_in_range = []
 var held_object: RigidBody3D
 @onready var inventory = $Inventory
 
+var forwards: Vector3 # remember which way is forwards
+
 signal money_changed(amount: int)
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -67,20 +69,38 @@ func _physics_process(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
+	if is_on_floor():
+		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		if direction:
+			velocity.x = direction.x * SPEED
+			velocity.z = direction.z * SPEED
+			character_body.look_at(position + direction) # character faces direction they're walking
+	#		else:
+	#			character_body.rotation.y = 0 # face forward in the air
+	#		if input_dir.y == -1:
+	#			forwards = direction
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
+			velocity.z = move_toward(velocity.z, 0, SPEED)
+	#		else:
+	#			character_body.rotation.y = 0 # face forward in the air
+	#			velocity.x = forwards.x * SPEED
+	#			velocity.z = forwards.z * SPEED
+
+	# attempt at tank controls
+	else:
+		character_body.rotation.y = 0 # face forward in the air
+		# calculate braking
+			# check Brake control
+		# always move forward
+		var direction = (transform.basis * Vector3(0, 0, -1)).normalized() # NOTE: does this work?
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		if is_on_floor():
-			character_body.look_at(position + direction) # character faces direction they're walking
-		else:
-			character_body.rotation.y = 0 # face forward in the air
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-		if not is_on_floor():
-			character_body.rotation.y = 0 # face forward in the air
-	
+		print(direction)
+		
+		# calculate rotation amount
+			# check input_dir.x
+
 	move_and_slide()
 
 func _on_item_detection_body_entered(body):
