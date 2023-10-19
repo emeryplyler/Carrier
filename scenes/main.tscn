@@ -15,39 +15,39 @@ size = Vector3(30, 2, 120)
 [sub_resource type="BoxShape3D" id="BoxShape3D_5rxsu"]
 size = Vector3(30, 2, 120)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hm45c"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r1k7y"]
 resource_local_to_scene = true
 albedo_color = Color(0.8, 0.121569, 0.301961, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_85n1f"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b6iy3"]
 resource_local_to_scene = true
 albedo_color = Color(1, 0.682353, 0, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a2ere"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwj1d"]
 resource_local_to_scene = true
 albedo_color = Color(0.243137, 0.384314, 0.901961, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7npgh"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_frhfj"]
 resource_local_to_scene = true
 albedo_color = Color(0.8, 0.121569, 0.301961, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pk3np"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glvrk"]
 resource_local_to_scene = true
 albedo_color = Color(1, 0.682353, 0, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ojbk8"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0kew3"]
 resource_local_to_scene = true
 albedo_color = Color(0.243137, 0.384314, 0.901961, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g1igx"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p4027"]
 resource_local_to_scene = true
 albedo_color = Color(0.8, 0.121569, 0.301961, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qgnhw"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d3klw"]
 resource_local_to_scene = true
 albedo_color = Color(1, 0.682353, 0, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6oxkh"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_81ibf"]
 resource_local_to_scene = true
 albedo_color = Color(0.243137, 0.384314, 0.901961, 1)
 
@@ -80,24 +80,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.87633, 2.09043, -87.2074)
 [node name="Cargo" parent="." instance=ExtResource("3_pvfr7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.89399, 2.77284, -6.91467)
 id = 2
-red = SubResource("StandardMaterial3D_hm45c")
-yellow = SubResource("StandardMaterial3D_85n1f")
-blue = SubResource("StandardMaterial3D_a2ere")
+red = SubResource("StandardMaterial3D_r1k7y")
+yellow = SubResource("StandardMaterial3D_b6iy3")
+blue = SubResource("StandardMaterial3D_fwj1d")
 randomize = false
 
 [node name="Cargo2" parent="." instance=ExtResource("3_pvfr7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.58264, 2.77284, -12.9933)
-red = SubResource("StandardMaterial3D_7npgh")
-yellow = SubResource("StandardMaterial3D_pk3np")
-blue = SubResource("StandardMaterial3D_ojbk8")
+red = SubResource("StandardMaterial3D_frhfj")
+yellow = SubResource("StandardMaterial3D_glvrk")
+blue = SubResource("StandardMaterial3D_0kew3")
 randomize = false
 
 [node name="Cargo3" parent="." instance=ExtResource("3_pvfr7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.88713, 2.77284, -9.49426)
 id = 1
-red = SubResource("StandardMaterial3D_g1igx")
-yellow = SubResource("StandardMaterial3D_qgnhw")
-blue = SubResource("StandardMaterial3D_6oxkh")
+red = SubResource("StandardMaterial3D_p4027")
+yellow = SubResource("StandardMaterial3D_d3klw")
+blue = SubResource("StandardMaterial3D_81ibf")
 randomize = false
 
 [node name="BoxEmitter" type="Node3D" parent="."]
