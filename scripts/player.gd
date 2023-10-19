@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @onready var camera_target = $CamTarget
 @onready var character_body = $CharacterBody
+@onready var cam_arm = $CamTarget/CamArm
 
 @export var SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -11,8 +12,6 @@ const MAX_UP_VELOCITY = 8
 var objects_in_range = []
 var held_object: RigidBody3D
 @onready var inventory = $Inventory
-
-var forwards: Vector3 # remember which way is forwards
 
 signal money_changed(amount: int)
 
@@ -24,11 +23,15 @@ func _ready():
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * 0.005) # rotate cam side to side
 		if is_on_floor():
+			rotate_y(-event.relative.x * 0.005) # rotate cam side to side
 			character_body.rotate_y(event.relative.x * 0.005) # keep character from spinning
-		camera_target.rotate_x(-event.relative.y * 0.005) # rotate cam up and down
-		camera_target.rotation.x = clamp(camera_target.rotation.x, -PI/2, PI/2)
+			camera_target.rotate_x(-event.relative.y * 0.005) # rotate cam up and down
+			camera_target.rotation.x = clamp(camera_target.rotation.x, -PI/2, PI/2)
+		else:
+			camera_target.rotate_y(-event.relative.x * 0.005)
+			cam_arm.rotate_x(-event.relative.y * 0.005)
+			cam_arm.rotation.x = clamp(cam_arm.rotation.x, -PI/2, PI/2)
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -59,13 +62,6 @@ func _physics_process(delta):
 			velocity.y += JUMP_VELOCITY
 		else:
 			velocity.y = MAX_UP_VELOCITY
-	
-	# Floating controls:
-#	var vertical_dir = Input.get_action_strength("jump") - Input.get_action_strength("descend")
-#	if vertical_dir != 0:
-#		velocity.y = vertical_dir * SPEED
-#	else:
-#		velocity.y = move_toward(velocity.y, 0, SPEED)
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
@@ -74,20 +70,12 @@ func _physics_process(delta):
 		if direction:
 			velocity.x = direction.x * SPEED
 			velocity.z = direction.z * SPEED
-			character_body.look_at(position + direction) # character faces direction they're walking
-	#		else:
-	#			character_body.rotation.y = 0 # face forward in the air
-	#		if input_dir.y == -1:
-	#			forwards = direction
+			character_body.look_at(position + direction)
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			velocity.z = move_toward(velocity.z, 0, SPEED)
-	#		else:
-	#			character_body.rotation.y = 0 # face forward in the air
-	#			velocity.x = forwards.x * SPEED
-	#			velocity.z = forwards.z * SPEED
 
-	# attempt at tank controls
+	# attempt at tank controls (for flying only)
 	else:
 		character_body.rotation.y = 0 # face forward in the air
 		# calculate braking
@@ -96,7 +84,6 @@ func _physics_process(delta):
 		var direction = (transform.basis * Vector3(0, 0, -1)).normalized() # NOTE: does this work?
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
-		print(direction)
 		
 		# calculate rotation amount
 			# check input_dir.x

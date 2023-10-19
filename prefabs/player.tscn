@@ -35,7 +35,9 @@ skeleton = NodePath("../..")
 [node name="CamTarget" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.580509, 0)
 
-[node name="Camera3D" type="Camera3D" parent="CamTarget"]
+[node name="CamArm" type="Node3D" parent="CamTarget"]
+
+[node name="Camera3D" type="Camera3D" parent="CamTarget/CamArm"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.06448)
 environment = ExtResource("2_ly7mr")
 
