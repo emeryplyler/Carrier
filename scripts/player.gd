@@ -5,8 +5,10 @@ extends CharacterBody3D
 @onready var cam_arm = $CamTarget/CamArm
 
 @export var SPEED = 5.0
+@export var rotate_speed = 0.5
 const JUMP_VELOCITY = 4.5
 const MAX_UP_VELOCITY = 8
+var onGround: bool = false # used to detect landing
 
 @onready var object_hold_position = $ObjectHoldPosition
 var objects_in_range = []
@@ -24,21 +26,35 @@ func _ready():
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		if is_on_floor():
+#			camera_target.rotation.y = 0 # NOTE: FIX THIS
 			rotate_y(-event.relative.x * 0.005) # rotate cam side to side
 			character_body.rotate_y(event.relative.x * 0.005) # keep character from spinning
 			camera_target.rotate_x(-event.relative.y * 0.005) # rotate cam up and down
 			camera_target.rotation.x = clamp(camera_target.rotation.x, -PI/2, PI/2)
+			
+			# using other arms
+#			rotate_y(-event.relative.x * 0.005) # rotate cam side to side
+##			character_body.rotate_y(event.relative.x * 0.005) # keep character from spinning
+#			cam_arm.rotate_x(-event.relative.y * 0.005) # rotate cam up and down
+#			cam_arm.rotation.x = clamp(cam_arm.rotation.x, -PI/2, PI/2)
 		else:
 			camera_target.rotate_y(-event.relative.x * 0.005)
 			cam_arm.rotate_x(-event.relative.y * 0.005)
 			cam_arm.rotation.x = clamp(cam_arm.rotation.x, -PI/2, PI/2)
 
 func _physics_process(delta):
+#	print("full: ", rotation, " camtarget: ", camera_target.rotation, " camarm: ", cam_arm.rotation)
 	# Add the gravity.
 	if not is_on_floor():
 #		velocity.y -= gravity * delta
 		velocity.y -= (gravity * delta)
 #		velocity.z = SPEED
+		onGround = false
+	else:
+		if not onGround:
+			landing() # player has just landed on the ground
+		onGround = true
+
 
 	# Handle held objects
 	if Input.is_action_just_pressed("interact"):
@@ -66,6 +82,7 @@ func _physics_process(delta):
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
 	if is_on_floor():
+#		rotation.y = 0 # reset rotation from flying
 		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
 			velocity.x = direction.x * SPEED
@@ -80,15 +97,26 @@ func _physics_process(delta):
 		character_body.rotation.y = 0 # face forward in the air
 		# calculate braking
 			# check Brake control
-		# always move forward
-		var direction = (transform.basis * Vector3(0, 0, -1)).normalized() # NOTE: does this work?
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-		
+			
 		# calculate rotation amount
 			# check input_dir.x
+		rotate_y(-input_dir.x * rotate_speed)
+			
+		# always move forward
+		var direction = (transform.basis * Vector3(0, 0, -1)).normalized()
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
 
 	move_and_slide()
+
+func landing():
+	# set player rotation equal to camera_target.y rotation, then reset camera target y rotation to 0
+	print("prev self rotation: ", rotation.y)  
+	rotation.y = camera_target.rotation.y
+	print("self rotation: ", rotation.y, "cam target rotation: ", camera_target.rotation.y)
+	camera_target.rotation.y = 0
+	
+	pass
 
 func _on_item_detection_body_entered(body):
 	if body != self:
