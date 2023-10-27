@@ -55,6 +55,10 @@ func _physics_process(delta):
 			landing() # player has just landed on the ground
 		onGround = true
 
+	# DEBUG
+	if Input.is_action_just_pressed("debug"):
+		print("\nSelf Rotation: ", rotation.y)
+		print("CameraTarget Rotation: ", camera_target.rotation.y)
 
 	# Handle held objects
 	if Input.is_action_just_pressed("interact"):
@@ -111,12 +115,12 @@ func _physics_process(delta):
 
 func landing():
 	# set player rotation equal to camera_target.y rotation, then reset camera target y rotation to 0
-	print("prev self rotation: ", rotation.y)  
-	rotation.y = camera_target.rotation.y
-	print("self rotation: ", rotation.y, "cam target rotation: ", camera_target.rotation.y)
-	camera_target.rotation.y = 0
+	var old_rotation = rotation.y
+	var new_rotation_vec = camera_target.global_transform.basis.get_euler() # get current camera rotation
+	rotation.y = new_rotation_vec.y # rotate character to where camera was facing
+	character_body.rotate_y(old_rotation - rotation.y) # make it so char body doesn't spin
+	camera_target.rotation.y = 0 # reset cam target y rotation for next takeoff
 	
-	pass
 
 func _on_item_detection_body_entered(body):
 	if body != self:
