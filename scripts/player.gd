@@ -31,12 +31,6 @@ func _unhandled_input(event):
 			character_body.rotate_y(event.relative.x * 0.005) # keep character from spinning
 			camera_target.rotate_x(-event.relative.y * 0.005) # rotate cam up and down
 			camera_target.rotation.x = clamp(camera_target.rotation.x, -PI/2, PI/2)
-			
-			# using other arms
-#			rotate_y(-event.relative.x * 0.005) # rotate cam side to side
-##			character_body.rotate_y(event.relative.x * 0.005) # keep character from spinning
-#			cam_arm.rotate_x(-event.relative.y * 0.005) # rotate cam up and down
-#			cam_arm.rotation.x = clamp(cam_arm.rotation.x, -PI/2, PI/2)
 		else:
 			camera_target.rotate_y(-event.relative.x * 0.005)
 			cam_arm.rotate_x(-event.relative.y * 0.005)
@@ -47,18 +41,13 @@ func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 #		velocity.y -= gravity * delta
-		velocity.y -= (gravity * delta)
+		velocity.y -= (gravity * delta) # gliding fall rate
 #		velocity.z = SPEED
 		onGround = false
 	else:
 		if not onGround:
 			landing() # player has just landed on the ground
 		onGround = true
-
-	# DEBUG
-	if Input.is_action_just_pressed("debug"):
-		print("\nSelf Rotation: ", rotation.y)
-		print("CameraTarget Rotation: ", camera_target.rotation.y)
 
 	# Handle held objects
 	if Input.is_action_just_pressed("interact"):
@@ -101,15 +90,18 @@ func _physics_process(delta):
 		character_body.rotation.y = 0 # face forward in the air
 		# calculate braking
 			# check Brake control
-			
-		# calculate rotation amount
-			# check input_dir.x
-		rotate_y(-input_dir.x * rotate_speed)
+		var braking = 2
+		if Input.is_action_pressed("backward"):
+			braking = 1
 			
 		# always move forward
 		var direction = (transform.basis * Vector3(0, 0, -1)).normalized()
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		# lerps towards speed, or towards half-speed if Brake is held down
+		# the 15 is just to speed up the rate of change
+		velocity.x = move_toward(velocity.x, direction.x * SPEED * (0.5 * braking), 15 * delta)
+		velocity.z = move_toward(velocity.z, direction.z * SPEED * (0.5 * braking), 15 * delta)
+		# rotate for turning
+		rotate_y(-input_dir.x * rotate_speed)
 
 	move_and_slide()
 
