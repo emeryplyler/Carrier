@@ -5,10 +5,12 @@ extends CharacterBody3D
 @onready var cam_arm = $CamTarget/CamArm
 
 @export var SPEED = 5.0
-@export var rotate_speed = 0.5
+@export var rotate_speed = 0.25
 const JUMP_VELOCITY = 4.5
 const MAX_UP_VELOCITY = 8
 var onGround: bool = false # used to detect landing
+var braking = 2 # speed multiplier
+const brake_delta_mult = 30 # rate of change multiplier for acceleration
 
 @onready var object_hold_position = $ObjectHoldPosition
 var objects_in_range = []
@@ -26,7 +28,6 @@ func _ready():
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		if is_on_floor():
-#			camera_target.rotation.y = 0 # NOTE: FIX THIS
 			rotate_y(-event.relative.x * 0.005) # rotate cam side to side
 			character_body.rotate_y(event.relative.x * 0.005) # keep character from spinning
 			camera_target.rotate_x(-event.relative.y * 0.005) # rotate cam up and down
@@ -89,20 +90,27 @@ func _physics_process(delta):
 	else:
 		character_body.rotation.y = 0 # face forward in the air
 		# calculate braking
-			# check Brake control
-		var braking = 2
 		if Input.is_action_pressed("backward"):
-			braking = 1
-			
+#			braking = 1 # brake
+			braking = move_toward(braking, 1, 0.5 * brake_delta_mult * delta) # brake
+		elif Input.is_action_pressed("forward"):
+			rotation.x = move_toward(rotation.x, -PI/2, 2 * delta) # use basis instead?
+#			braking = 8 # dive
+			braking = move_toward(braking, 8, 2 * brake_delta_mult * delta) # brake
+		else:
+			rotation.x = move_toward(rotation.x, 0, 2 * delta)
+#			braking = 2 # base speed multiplier
+			braking = move_toward(braking, 2, brake_delta_mult * delta) # brake
 		# always move forward
 		var direction = (transform.basis * Vector3(0, 0, -1)).normalized()
 		# lerps towards speed, or towards half-speed if Brake is held down
 		# the 15 is just to speed up the rate of change
-		velocity.x = move_toward(velocity.x, direction.x * SPEED * (0.5 * braking), 15 * delta)
-		velocity.z = move_toward(velocity.z, direction.z * SPEED * (0.5 * braking), 15 * delta)
+		velocity.x = direction.x * SPEED * (0.5 * braking)
+		velocity.z = direction.z * SPEED * (0.5 * braking)
 		# rotate for turning
 		rotate_y(-input_dir.x * rotate_speed)
 
+	transform = transform.orthonormalized() # prevent deformation
 	move_and_slide()
 
 func landing():
@@ -112,7 +120,14 @@ func landing():
 	rotation.y = new_rotation_vec.y # rotate character to where camera was facing
 	character_body.rotate_y(old_rotation - rotation.y) # make it so char body doesn't spin
 	camera_target.rotation.y = 0 # reset cam target y rotation for next takeoff
+	rotation.x = 0 # reset this in case you just crashed
+	camera_target.rotation.x = cam_arm.global_transform.basis.get_euler().x
+	cam_arm.rotation.x = 0
 	
+func tip(angle : float):
+	# tilt player forward during dive or reverse after dive
+	
+	pass
 
 func _on_item_detection_body_entered(body):
 	if body != self:
